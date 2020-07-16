@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ldaphelper-pkg-christian-hawk", # Replace with your own username
+    name="ldaphelper", # Replace with your own username
     version="0.0.3",
     author="Christian Eland",
     author_email="eland.christian@gmail.com",
