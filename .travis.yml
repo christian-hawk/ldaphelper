@@ -3,11 +3,16 @@ python:
 - '3.6'
 install:
 - pip install -r requirements.txt
-script:
-- python3 -m pytest
-- python3 -m pytest --cov-report term --cov=ldaphelper tests/
-after_success:
-- codecov
+
+jobs:
+    include:
+    - stage: test
+    script: - python3 -m pytest
+    - #
+    name: coverage
+    script: python3 -m pytest --cov-report term --cov=ldaphelper tests/
+    after_success:
+        - codecov
 deploy:
     provider: pypi
     username: "__token__"
