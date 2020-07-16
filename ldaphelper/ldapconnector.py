@@ -1,8 +1,5 @@
 import ldap
 import ldap.modlist as modlist
-import random
-import string
-from .helper import get_random_inum
 
 class LdapConnector():
     def __init__(self,login,password):
