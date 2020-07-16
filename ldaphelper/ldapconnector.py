@@ -4,29 +4,28 @@ import random
 import string
 from .helper import get_random_inum
 
-class LdapConnector():
-    def __init__(self,login,password):
+
+class LdapConnector:
+    def __init__(self, login, password):
         self.ldap_login = login
         self.password = password
         self.baseDN = "o=gluu"
         self.searchScope = ldap.SCOPE_SUBTREE
         self.open_connection()
 
-
     def open_connection(self):
         """Open connection with ldap server as self.connect"""
-        ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT,ldap.OPT_X_TLS_NEVER)
+        ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
         self.connect = ldap.initialize("ldaps://localhost:1636")
         self.connect.set_option(ldap.OPT_DEBUG_LEVEL, 255)
         self.connect.protocol_version = ldap.VERSION2
-        self.connect.simple_bind_s(self.ldap_login,self.password)
-
+        self.connect.simple_bind_s(self.ldap_login, self.password)
 
     def close_connection(self):
         """closes connection with ldap server"""
         self.connect.unbind_s()
 
-    def get_user_by_uid(self,uid):
+    def get_user_by_uid(self, uid):
         """[Return complete user from server]
 
         Args:
@@ -35,14 +34,16 @@ class LdapConnector():
         Returns:
             [class 'tuple']: [(dn, attrs)]
         """
-        user = self.connect.search_s(self.baseDN,self.searchScope,'uid=%s' % uid,[
-            'objectClass','mail','givenName','sn','uid','inum'
-            ])
+        user = self.connect.search_s(
+            self.baseDN,
+            self.searchScope,
+            "uid=%s" % uid,
+            ["objectClass", "mail", "givenName", "sn", "uid", "inum"],
+        )
         # user = self.connect.search_s(self.baseDN,self.searchScope,'uid=%s' % uid)
         return user[0]
 
-
-    def create_user(self,uid,password,mail,givenName,sn):
+    def create_user(self, uid, password, mail, givenName, sn):
         """creates user on server and returns created user
 
         Args:
@@ -56,21 +57,25 @@ class LdapConnector():
             [type]: [description]
         """
         attrs = {}
-        attrs['objectClass'] = ['top'.encode('utf-8'), 'gluuCustomPerson'.encode('utf-8'), 'gluuPerson'.encode('utf-8')]
-        attrs['mail'] = mail.encode()
-        attrs['givenName'] = givenName.encode()
-        attrs['sn'] = sn.encode()
-        attrs['uid'] = uid.encode()
-        attrs['userPassword'] = password.encode()
-        attrs['inum'] = self.get_random_inum().encode()
-        attrs['displayName'] = ('%s %s' % (givenName, sn)).encode()
-        attrs['gluuStatus'] = 'active'.encode()
+        attrs["objectClass"] = [
+            "top".encode("utf-8"),
+            "gluuCustomPerson".encode("utf-8"),
+            "gluuPerson".encode("utf-8"),
+        ]
+        attrs["mail"] = mail.encode()
+        attrs["givenName"] = givenName.encode()
+        attrs["sn"] = sn.encode()
+        attrs["uid"] = uid.encode()
+        attrs["userPassword"] = password.encode()
+        attrs["inum"] = self.get_random_inum().encode()
+        attrs["displayName"] = ("%s %s" % (givenName, sn)).encode()
+        attrs["gluuStatus"] = "active".encode()
 
         ldif = modlist.addModlist(attrs)
 
-        dn = 'inum=%s,ou=people,o=gluu' % attrs['inum'].decode()
+        dn = "inum=%s,ou=people,o=gluu" % attrs["inum"].decode()
 
-        self.connect.add_s(dn,ldif)
+        self.connect.add_s(dn, ldif)
         generated_user = self.get_user_by_uid(uid)
 
         return generated_user
@@ -85,12 +90,9 @@ class LdapConnector():
     #     fake_inum = ''.join((random.choice(letters_and_digits) for i in range(30)))
     #     return fake_inum
 
-    def delete_user(self,inum: str):
-        dn = 'inum=%s,ou=people,o=gluu' % inum
+    def delete_user(self, inum: str):
+        dn = "inum=%s,ou=people,o=gluu" % inum
         self.connect.delete_s(dn)
-
-
-
 
 
 # zero = 'inum=76bc7475-1bbe-4677-9496-3bee197a9ccd,ou=people,o=gluu'
@@ -116,7 +118,7 @@ class LdapConnector():
 # print('-------------------------------')
 # print()
 # print(connect.search_s(baseDN,searchScope,'displayName=josephdoe2'))
-#connect.search(baseDN,searchScope,)
+# connect.search(baseDN,searchScope,)
 # connect.unbind_s()
 # except ldap.LDAPError e:
 #     print("LDAP ERROR!! " + e)
