@@ -71,7 +71,7 @@ class TestOp(TestCase):
 
     def test_if_get_op_by_display_name_is_callable(self):
         self.assertTrue(
-            hasattr(op.Op.get_op_by_display_name, "__call__"),
+            callable(op.Op.get_op_by_display_name),
             "get_op_by_display_name is not callable",
         )
 
