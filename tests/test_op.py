@@ -77,7 +77,8 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE,
+        ):
 
             self.assertIsInstance(
                 op.Op.get_op_by_display_name(op_instance, "test-client"),
@@ -98,7 +99,8 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE,
+        ):
             op_client = op_instance.get_op_by_display_name("test-client")
             self.assertTrue(
                 type(op_client[1]) is dict,
@@ -109,8 +111,8 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
-
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE,
+        ):
 
             tp = op_instance.get_op_by_display_name("test-client")
 
