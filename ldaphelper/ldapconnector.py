@@ -5,7 +5,6 @@ import ldap.modlist as modlist
 class LdapConnector:
     searchScope = None
     connect = None
-
     def __init__(self, login, password):
         self.ldap_login = login
         self.password = password
