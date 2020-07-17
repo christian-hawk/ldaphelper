@@ -3,3 +3,24 @@
 
 
 Wanna try to make it a little easier
+
+```python
+from ldaphelper import LdapConnection(), User
+
+user = 'cn=directory manager'
+password = 'amazingpassword'
+
+con = LdapConnection(user,password)
+ldp_user = User(con)
+
+user = {
+    "uuid" : "johndoe",
+    "password" : "strongpassword,
+    "mail" : "john.doe@ldaphelper.org",
+    "givenName" : "John",
+    "sn" : "Doe"
+}
+
+added_user = ldp_user.add_user(user)
+
+```

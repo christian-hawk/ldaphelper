@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ldaphelper",
-    version="0.0.4",
+    version="0.2.0",
     author="Christian Eland",
     author_email="eland.christian@gmail.com",
     description="Wanna make ldap handling a little easier",
