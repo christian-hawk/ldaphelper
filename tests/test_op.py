@@ -13,12 +13,7 @@ def get_Op_instance():
     """ Returns Op instance initialized with a mocked LdapConnection """
     connection = MagicMock(ldaphelper.ldapconnector.LdapConnector)
     connection.__setattr__("connect", ldap.ldapobject.SimpleLDAPObject)
-    # connection.connect.__setattr__('search_s','value')
-    # connection.connect = MagicMock(ldaphelper.ldapconnector.LdapConnector.connect)
-    # connection.searchScope = MagicMock(ldaphelper.ldapconnector.LdapConnector.searchScope)
     op_instance = op.Op(connection)
-    # op_instance.connection.connect.search_s = MagicMock(
-    #     op.Op.dn,ldaphelper.LdapConnector.searchScope,'displayName=%s' % 'test-client')
     return op_instance
 
 
@@ -34,7 +29,7 @@ class TestOp(TestCase):
         self.assertTrue(hasattr(op, "Op"), "Op does not exist in op")
 
     def test_if_Op_is_class(self):
-        self.assertTrue(type(op.Op) == type, "Op is not type (not a Class)")
+        self.assertTrue(type(op.Op) is type, "Op is not type (not a Class)")
 
     def test_if_Op_receives_LdapConnector(self):
         """[Check if Op receives class LdapConnector as arg]
@@ -82,8 +77,8 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=(helper.MOCKED_SEARCH_S_VALID_RESPONSE),
-        ) as search_s:
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
+
             self.assertIsInstance(
                 op.Op.get_op_by_display_name(op_instance, "test-client"),
                 tuple,
@@ -94,7 +89,7 @@ class TestOp(TestCase):
         self.assertTrue(hasattr(op.Op, "dn"), "Op does not have dn attribute")
 
     def test_if_dn_is_string(self):
-        self.assertTrue(type(op.Op.dn) == str, "dn is not a string")
+        self.assertTrue(type(op.Op.dn) is str, "dn is not a string")
 
     def test_if_get_op_by_display_name_one_return_dict(self):
         """ get_op_by_display_name[1] """
@@ -103,11 +98,10 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=(helper.MOCKED_SEARCH_S_VALID_RESPONSE),
-        ) as search_s:
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
             op_client = op_instance.get_op_by_display_name("test-client")
             self.assertTrue(
-                type(op_client[1]) == dict,
+                type(op_client[1]) is dict,
                 "get_op_by_display_name[1] is not a dict")
 
     def test_if_get_op_by_display_name_returns_valid_tuple(self):
@@ -115,8 +109,8 @@ class TestOp(TestCase):
         with patch.object(
                 op_instance.connection.connect,
                 "search_s",
-                return_value=(helper.MOCKED_SEARCH_S_VALID_RESPONSE),
-        ) as search_s:
+                return_value=helper.MOCKED_SEARCH_S_VALID_RESPONSE):
+
 
             tp = op_instance.get_op_by_display_name("test-client")
 
