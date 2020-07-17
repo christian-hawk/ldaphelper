@@ -1,6 +1,5 @@
 import ldaphelper
 from ldaphelper.ldapconnector import modlist
-import json
 
 
 class Op:
