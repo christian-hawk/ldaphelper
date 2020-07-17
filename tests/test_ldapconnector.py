@@ -18,6 +18,7 @@ class TestLdapConnector(TestCase):
             ModuleType,
             'ldap is not a module'
         )
+
     def test_ldap_exists_as_module(self):
         self.assertIn(
             'ldap',

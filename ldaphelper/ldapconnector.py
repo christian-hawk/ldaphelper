@@ -3,6 +3,9 @@ import ldap.modlist as modlist
 
 
 class LdapConnector:
+    searchScope = None
+    connect = None
+
     def __init__(self, login, password):
         self.ldap_login = login
         self.password = password
@@ -69,7 +72,7 @@ class LdapConnector:
         attrs["gluuStatus"] = "active".encode()
 
         ldif = modlist.addModlist(attrs)
-
+        modlist.addModlist()
         dn = "inum=%s,ou=people,o=gluu" % attrs["inum"].decode()
 
         self.connect.add_s(dn, ldif)
