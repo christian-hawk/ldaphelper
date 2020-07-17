@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ldaphelper", # Replace with your own username
-    version="0.0.3",
+    name="ldaphelper",
+    version="0.0.4",
     author="Christian Eland",
     author_email="eland.christian@gmail.com",
     description="Wanna make ldap handling a little easier",

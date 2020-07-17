@@ -72,7 +72,7 @@ class LdapConnector:
         attrs["gluuStatus"] = "active".encode()
 
         ldif = modlist.addModlist(attrs)
-
+        modlist.addModlist()
         dn = "inum=%s,ou=people,o=gluu" % attrs["inum"].decode()
 
         self.connect.add_s(dn, ldif)
