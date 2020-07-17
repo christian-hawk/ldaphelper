@@ -5,6 +5,7 @@ from ldaphelper import op
 from types import ModuleType
 import inspect
 import ldap
+import helper
 
 ldap.initialize
 
@@ -92,9 +93,7 @@ class TestOp(TestCase):
 
         op_instance = get_Op_instance()
         with patch.object(op_instance.connection.connect, 'search_s',
-            return_value = (('aaa','ddd'),)) as search_s:
-            """ @TODO: change return_value to mocked real response """
-
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
             self.assertIsInstance(
                 op.Op.get_op_by_display_name(op_instance,'test-client'),
                 tuple,
@@ -111,23 +110,28 @@ class TestOp(TestCase):
 
     def test_if_get_op_by_display_name_one_return_dict(self):
         """ get_op_by_display_name[1] """
-        connection = ldaphelper.LdapConnector('cn=directory manager','Test123$')
-        oprovider = op.Op(connection)
-        tp = oprovider.get_op_by_display_name('test-client')
-        self.assertTrue(type(tp[1]) == dict,'get_op_by_display_name[1] is not a dict')
+        # mocked
+        op_instance = get_Op_instance()
+        with patch.object(op_instance.connection.connect, 'search_s',
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
+            op_client = op_instance.get_op_by_display_name('test-client')
+            self.assertTrue(type(op_client[1]) == dict,'get_op_by_display_name[1] is not a dict')
 
     def test_if_get_op_by_display_name_returns_valid_tuple(self):
-        connection = ldaphelper.LdapConnector('cn=directory manager','Test123$')
-        oprovider = op.Op(connection)
-        tp = oprovider.get_op_by_display_name('test-client')
+        op_instance = get_Op_instance()
+        with patch.object(op_instance.connection.connect, 'search_s',
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
 
-        some_keys = ['objectClass', 'oxAuthScope', 'oxAuthTrustedClient', 'oxAuthResponseType',
-            'oxAuthTokenEndpointAuthMethod', 'oxAuthRequireAuthTime', 'oxAccessTokenAsJwt',
-            'oxPersistClientAuthorizations', 'oxAuthGrantType', 'inum', 'oxAttributes', 'oxAuthAppType',
-            'oxLastLogonTime', 'oxDisabled', 'oxIncludeClaimsInIdToken', 'oxRptAsJwt', 'displayName',
-            'oxAuthClientSecret', 'oxAuthSubjectType']
-        #import ipdb; ipdb.set_trace()
-        self.assertTrue(set(some_keys).issubset(tp[1]),'search response tuple does not have expected keys')
+            tp = op_instance.get_op_by_display_name('test-client')
+
+            some_keys = ['objectClass', 'oxAuthScope', 'oxAuthTrustedClient', 'oxAuthResponseType',
+                'oxAuthTokenEndpointAuthMethod', 'oxAuthRequireAuthTime', 'oxAccessTokenAsJwt',
+                'oxPersistClientAuthorizations', 'oxAuthGrantType', 'inum', 'oxAttributes', 'oxAuthAppType',
+                'oxLastLogonTime', 'oxDisabled', 'oxIncludeClaimsInIdToken', 'oxRptAsJwt', 'displayName',
+                'oxAuthClientSecret', 'oxAuthSubjectType']
+
+            #import ipdb; ipdb.set_trace()
+            self.assertTrue(set(some_keys).issubset(tp[1]),'search response[1] tuple does not have expected keys')
 
 
 

@@ -9,4 +9,5 @@ class Op:
     def get_op_by_display_name(self,displayName: str):
         op_client = self.connection.connect.search_s(
             self.dn,self.connection.searchScope,'displayName=%s' % displayName)
+        #import ipdb; ipdb.set_trace()
         return op_client[0]
