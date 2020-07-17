@@ -5,8 +5,7 @@ from ldaphelper import op
 from types import ModuleType
 import inspect
 import ldap
-
-ldap.initialize
+import helper
 
 
 # helper
