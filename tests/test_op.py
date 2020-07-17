@@ -93,7 +93,7 @@ class TestOp(TestCase):
 
         op_instance = get_Op_instance()
         with patch.object(op_instance.connection.connect, 'search_s',
-            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)):
             self.assertIsInstance(
                 op.Op.get_op_by_display_name(op_instance,'test-client'),
                 tuple,
@@ -113,14 +113,14 @@ class TestOp(TestCase):
         # mocked
         op_instance = get_Op_instance()
         with patch.object(op_instance.connection.connect, 'search_s',
-            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)):
             op_client = op_instance.get_op_by_display_name('test-client')
             self.assertTrue(type(op_client[1]) == dict,'get_op_by_display_name[1] is not a dict')
 
     def test_if_get_op_by_display_name_returns_valid_tuple(self):
         op_instance = get_Op_instance()
         with patch.object(op_instance.connection.connect, 'search_s',
-            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)) as search_s:
+            return_value = (helper.MOCKED_SEARCH_S_VALID_RESPONSE)):
 
             tp = op_instance.get_op_by_display_name('test-client')
 
